@@ -421,6 +421,9 @@ func (f *FSM) leaveStateCallbacks(e *Event) error {
 			return AsyncError{e.Err}
 		}
 	}
+	if f.current == "" {
+		return nil
+	}
 	if fn, ok := f.callbacks[cKey{target: "", callbackType: callbackLeaveState}]; ok {
 		fn(e)
 		if e.canceled {

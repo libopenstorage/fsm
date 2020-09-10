@@ -43,6 +43,27 @@ func TestSameState(t *testing.T) {
 	}
 }
 
+func TestEmptyStart(t *testing.T) {
+	leaveState := 0
+
+	fsm := NewFSM(
+		"",
+		Events{
+			{Name: "run", Src: []string{""}, Dst: "end"},
+		},
+		Callbacks{
+			"leave_state": func(e *Event) {
+				leaveState++
+			},
+		},
+	)
+
+	fsm.Event("run")
+	if leaveState != 1 {
+		t.Error("expected a callback to be called only once")
+	}
+}
+
 func TestSetState(t *testing.T) {
 	fsm := NewFSM(
 		"walking",
